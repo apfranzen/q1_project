@@ -39,7 +39,7 @@ var allPromises = Promise.all(promises).then(function(returnedAJAXArr) {
   }
   // console.log(stationsObjFromStatus);
 
-  console.log(stationsObjFromStatus);
+  // console.log(stationsObjFromStatus);
   return stationsObjFromStatus;
 
 });
@@ -75,12 +75,21 @@ function getBStationInfo() {
 // Passing in lat and long perameters from geoFindMe
   function initMap(lat, lng) {
   allPromises.then(function(payload) {
+    // console.log(payload);
+    for (var station in payload) {
+      var lat = (payload[station].lat);
+      var lon = (payload[station].lon);
+      var station1 = (payload[station].numBikesAvailKey);
+      var bLatLong = new google.maps.LatLng(lat, lon);
+      mapMarker(bLatLong, station1);
+    }
+  });
 
-    console.log(payload);
+    // console.log(payload);
 
   var myLatLng = new google.maps.LatLng(lat, lng);
 
-  var bLatLong = new google.maps.LatLng(-104.95253, 39.72055);
+  // var bLatLong = new google.maps.LatLng(-104.95253, 39.72055);
 
   var map = new google.maps.Map(document.getElementById('map'), {
     zoom: 13,
@@ -93,13 +102,15 @@ function getBStationInfo() {
     title: 'Hello World!'
   });
 
-  var marker2 = new google.maps.Marker({
-    position: bLatLong,
-    map: map,
-    title: 'B-cycle station'
+  function mapMarker(loc, description) {
+    new google.maps.Marker({
+      position: loc,
+      map: map,
+      title: description
   });
-  console.log('miles apart: ' + (((google.maps.geometry.spherical.computeDistanceBetween(myLatLng, bLatLong))*0.000621371).toFixed(2)));
-  });
+
+  // console.log('miles apart: ' + (((google.maps.geometry.spherical.computeDistanceBetween(myLatLng, bLatLong))*0.000621371).toFixed(2)));
+}
 }
 
 // Retrieve user location
