@@ -26,6 +26,7 @@ var allPromises = Promise.all(promises).then(function(returnedAJAXArr) {
     var key = stationsFromInfo[j].station_id;
     var lonVal = stationsFromInfo[j].lon;
     var latVal = stationsFromInfo[j].lat;
+    var nameVal = stationsFromInfo[j].name;
     // var stationID = Object.keys(stationsFromInfo[j])[4];
     // stationsObjFromStatus[stationsFromStatus[i].station_id]
     // for (var k = 0; k < stationsFromStatus.length; k++) {
@@ -35,6 +36,7 @@ var allPromises = Promise.all(promises).then(function(returnedAJAXArr) {
     // console.log(stationID);
     stationsObjFromStatus[key].lat = latVal;
     stationsObjFromStatus[key].lon = lonVal;
+    stationsObjFromStatus[key].name = nameVal;
 
   }
   // console.log(stationsObjFromStatus);
@@ -79,9 +81,9 @@ function getBStationInfo() {
     for (var station in payload) {
       var lat = (payload[station].lat);
       var lon = (payload[station].lon);
-      var station1 = (payload[station].numBikesAvailKey);
+      var name = (payload[station].name);
       var bLatLong = new google.maps.LatLng(lat, lon);
-      mapMarker(bLatLong, station1);
+      mapMarker(bLatLong, name);
     }
   });
 
