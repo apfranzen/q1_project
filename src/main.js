@@ -84,14 +84,16 @@ function getBStationInfo() {
       var name = (payload[station].name);
       var bLatLong = new google.maps.LatLng(lat, lon);
       mapMarker(bLatLong, name);
+      // distanceAway(blatLong);
     }
   });
 
     // console.log(payload);
 
-  var myLatLng = new google.maps.LatLng(lat, lng);
 
   // var bLatLong = new google.maps.LatLng(-104.95253, 39.72055);
+
+  var myLatLng = new google.maps.LatLng(lat, lng);
 
   var map = new google.maps.Map(document.getElementById('map'), {
     zoom: 13,
@@ -101,7 +103,7 @@ function getBStationInfo() {
   var marker = new google.maps.Marker({
     position: myLatLng,
     map: map,
-    title: 'Hello World!'
+    title: 'Current Location'
   });
 
   function mapMarker(loc, description) {
@@ -109,10 +111,17 @@ function getBStationInfo() {
       position: loc,
       map: map,
       title: description
-  });
+    });
+    console.log(distanceAway(loc));
+  }
 
-  // console.log('miles apart: ' + (((google.maps.geometry.spherical.computeDistanceBetween(myLatLng, bLatLong))*0.000621371).toFixed(2)));
-}
+  function distanceAway(stationLoc) {
+
+    var myLatLng = new google.maps.LatLng(lat, lng);
+
+    return((google.maps.geometry.spherical.computeDistanceBetween(myLatLng, stationLoc))*0.000621371).toFixed(2);
+
+  }
 }
 
 // Retrieve user location
