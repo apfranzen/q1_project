@@ -19,7 +19,27 @@ var allPromises = Promise.all(promises).then(function(returnedAJAXArr) {
       isReturning: stationsFromStatus[i].is_returning
     };
   }
+  var stationsFromInfo = returnedAJAXArr[1].data.stations;
+  // console.log(stationsFromInfo[0]['lon']);
+  for (var j = 0; j < stationsFromInfo.length; j++) {
+
+    var key = stationsFromInfo[j].station_id;
+    var lonVal = stationsFromInfo[j].lon;
+    var latVal = stationsFromInfo[j].lat;
+    // var stationID = Object.keys(stationsFromInfo[j])[4];
+    // stationsObjFromStatus[stationsFromStatus[i].station_id]
+    // for (var k = 0; k < stationsFromStatus.length; k++) {
+      // if (stationsFromStatus[k])
+    // }
+
+    // console.log(stationID);
+    stationsObjFromStatus[key].lat = latVal;
+    stationsObjFromStatus[key].lon = lonVal;
+
+  }
   // console.log(stationsObjFromStatus);
+
+  console.log(stationsObjFromStatus);
   return stationsObjFromStatus;
 
 });
@@ -33,6 +53,8 @@ function getBStatus() {
     method: 'GET'
   }).done(function (bStatusAJAXReturn){
     resolve(bStatusAJAXReturn);
+  }).fail(function(err){
+    return reject(err);
   });
   });
 }
@@ -44,6 +66,8 @@ function getBStationInfo() {
     method: 'GET'
   }).done(function (bStationInfoAJAXReturn){
     resolve(bStationInfoAJAXReturn);
+  }).fail(function(err){
+    return reject(err);
   });
   });
 }
@@ -51,7 +75,8 @@ function getBStationInfo() {
 // Passing in lat and long perameters from geoFindMe
   function initMap(lat, lng) {
   allPromises.then(function(payload) {
-    // console.log(payload.bcycle_denver_1646);
+
+    console.log(payload);
 
   var myLatLng = new google.maps.LatLng(lat, lng);
 
