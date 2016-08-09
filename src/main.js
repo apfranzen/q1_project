@@ -55,7 +55,7 @@ function getBStationInfo() {
 
   var myLatLng = new google.maps.LatLng(lat, lng);
 
-  var bLatLong = new google.maps.LatLng(bcycleLocationLat, bcycleLocationLon);
+  var bLatLong = new google.maps.LatLng(-104.95253, 39.72055);
 
   var map = new google.maps.Map(document.getElementById('map'), {
     zoom: 13,
