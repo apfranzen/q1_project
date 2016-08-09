@@ -1,69 +1,57 @@
-var bcycleLocationLat;
-
-var bcycleLocationLon;
-
-// Your code here!
-$(function () {
   console.log("sanity check");
-  getBStatus();
-  getBStationInfo();
-  geoFindMe();
+
+// promises.all returns an array with all data from each AJAX call
+var promises = [getBStatus(), getBStationInfo()];
+var allPromises = Promise.all(promises).then(function(returnedAJAXArr) {
+  // console.log(returnedAJAXArr);
+  var stationsFromStatus = returnedAJAXArr[0].data.stations;
+  // console.log(x);
+  var stationsObjFromStatus = {};
+  for (var i = 0; i < stationsFromStatus.length; i++) {
+    var numBikesAvailKey = Object.keys(stationsFromStatus[i])[1];
+    var numStationsAvailKey = Object.keys(stationsFromStatus[i])[2];
+    var isRenting = Object.keys(stationsFromStatus[i])[4];
+    var isReturning = Object.keys(stationsFromStatus[i])[5];
+    stationsObjFromStatus[stationsFromStatus[i].station_id] = {
+      numBikesAvailKey: stationsFromStatus[i].num_bikes_available,
+      numStationsAvailKey: stationsFromStatus[i].num_docks_available,
+      isRenting: stationsFromStatus[i].is_renting,
+      isReturning: stationsFromStatus[i].is_returning
+    };
+  }
+  // console.log(stationsObjFromStatus);
+  return stationsObjFromStatus;
+
 });
 
+  geoFindMe();
+
 function getBStatus() {
-  $.ajax ({
+  return new Promise(function(resolve, reject) {
+  $.ajax({
     url: 'https://gbfs.bcycle.com/bcycle_denver/station_status.json',
     method: 'GET'
-  }).success(function (bStatus){
-    // console.log(bStatus);
-    // console.log(bStatus.data.stations);
-    for (var i = 0; i < bStatus.data.stations.length; i++) {
-      var stationID = (bStatus.data.stations[i].station_id);
-
-      var numBikesAvail = (bStatus.data.stations[i].num_bikes_available);
-
-      var numDocksAvail = (bStatus.data.stations[i].num_docks_available);
-
-      // $("#select").append('<option>' + titles + '</option>');
-      //img
-    }
+  }).done(function (bStatusAJAXReturn){
+    resolve(bStatusAJAXReturn);
+  });
   });
 }
 
 function getBStationInfo() {
+  return new Promise(function(resolve, reject) {
   $.ajax ({
     url: 'https://gbfs.bcycle.com/bcycle_denver/station_information.json',
     method: 'GET'
-  }).success(function (bStationInfo){
-    console.log(bStationInfo.data.stations);
-    for (var i = 0; i < bStationInfo.data.stations.length; i++) {
-      var address = (bStationInfo.data.stations[i].address);
-
-      var latB = (bStationInfo.data.stations[i].lat);
-
-      var lonB = (bStationInfo.data.stations[i].lon);
-
-      bcycleLocationLat = latB;
-
-      bcycleLocationLon = lonB;
-
-      var stationIdInfo = (bStationInfo.data.stations[i].station_id);
-
-      var numDocksAvail = (bStationInfo.data.stations[i].num_docks_available);
-
-      // var marker = new google.maps.Marker({
-      //   position: myLatLng,
-      //   map: map,
-      //   title: 'Hello World!'
-
-      // });
-    }
+  }).done(function (bStationInfoAJAXReturn){
+    resolve(bStationInfoAJAXReturn);
+  });
   });
 }
-console.log(bcycleLocationLat);
 
 // Passing in lat and long perameters from geoFindMe
   function initMap(lat, lng) {
+  allPromises.then(function(payload) {
+    // console.log(payload.bcycle_denver_1646);
 
   var myLatLng = new google.maps.LatLng(lat, lng);
 
@@ -86,6 +74,7 @@ console.log(bcycleLocationLat);
     title: 'B-cycle station'
   });
   console.log('miles apart: ' + (((google.maps.geometry.spherical.computeDistanceBetween(myLatLng, bLatLong))*0.000621371).toFixed(2)));
+  });
 }
 
 // Retrieve user location
@@ -107,13 +96,6 @@ function geoFindMe() {
     console.log(longitude);
 
     initMap(latitude, longitude);
-
-    // output.innerHTML = '<p>Latitude is ' + latitude + '° <br>Longitude is ' + longitude + '°</p>';
-    //
-    // var img = new Image();
-    // img.src = "https://maps.googleapis.com/maps/api/staticmap?center=" + latitude + "," + longitude + "&zoom=13&size=300x300&sensor=false";
-    //
-    // output.appendChild(img);
   }
 
   function error() {
