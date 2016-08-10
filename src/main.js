@@ -1,5 +1,7 @@
-  console.log("sanity check");
+console.log("sanity check");
 
+
+var distances = [];
 // promises.all returns an array with all data from each AJAX call
 var promises = [getBStatus(), getBStationInfo()];
 var allPromises = Promise.all(promises).then(function(returnedAJAXArr) {
@@ -20,28 +22,20 @@ var allPromises = Promise.all(promises).then(function(returnedAJAXArr) {
     };
   }
   var stationsFromInfo = returnedAJAXArr[1].data.stations;
-  // console.log(stationsFromInfo[0]['lon']);
+
   for (var j = 0; j < stationsFromInfo.length; j++) {
 
     var key = stationsFromInfo[j].station_id;
     var lonVal = stationsFromInfo[j].lon;
     var latVal = stationsFromInfo[j].lat;
     var nameVal = stationsFromInfo[j].name;
-    // var stationID = Object.keys(stationsFromInfo[j])[4];
-    // stationsObjFromStatus[stationsFromStatus[i].station_id]
-    // for (var k = 0; k < stationsFromStatus.length; k++) {
-      // if (stationsFromStatus[k])
-    // }
 
-    // console.log(stationID);
     stationsObjFromStatus[key].lat = latVal;
     stationsObjFromStatus[key].lon = lonVal;
     stationsObjFromStatus[key].name = nameVal;
 
   }
-  // console.log(stationsObjFromStatus);
 
-  // console.log(stationsObjFromStatus);
   return stationsObjFromStatus;
 
 });
@@ -75,53 +69,71 @@ function getBStationInfo() {
 }
 
 // Passing in lat and long perameters from geoFindMe
-  function initMap(lat, lng) {
-  allPromises.then(function(payload) {
-    // console.log(payload);
-    for (var station in payload) {
-      var lat = (payload[station].lat);
-      var lon = (payload[station].lon);
-      var name = (payload[station].name);
-      var bLatLong = new google.maps.LatLng(lat, lon);
-      mapMarker(bLatLong, name);
-      // distanceAway(blatLong);
-    }
-  });
 
-    // console.log(payload);
+function initMap(lat, lng) {
 
+allPromises.then(function(payload) {
+  // console.log(payload);
+  for (var station in payload) {
+    var lat = (payload[station].lat);
+    var lon = (payload[station].lon);
+    var name = (payload[station].name);
+    var bLatLong = new google.maps.LatLng(lat, lon);
+    mapMarker(bLatLong, name);
+    // distanceAway(blatLong);
+  }
+  // return payload;
+  //
+});
 
-  // var bLatLong = new google.maps.LatLng(-104.95253, 39.72055);
+var myLatLng = new google.maps.LatLng(lat, lng);
 
-  var myLatLng = new google.maps.LatLng(lat, lng);
+var map = new google.maps.Map(document.getElementById('map'), {
+  zoom: 13,
+  center: myLatLng
+});
 
-  var map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 13,
-    center: myLatLng
-  });
+var marker = new google.maps.Marker({
+  position: myLatLng,
+  map: map,
+  title: 'Current Location'
+});
 
-  var marker = new google.maps.Marker({
-    position: myLatLng,
+function mapMarker(loc, description) {
+  new google.maps.Marker({
+    position: loc,
     map: map,
-    title: 'Current Location'
+    title: description
+  });
+  var myLatLng = new google.maps.LatLng(lat, lng);
+  var distanceArray = distanceAway(loc, myLatLng, description);
+}
+
+function distanceAway(stationLoc, userLocation, description1) {
+
+  var distance = parseFloat((google.maps.geometry.spherical.computeDistanceBetween(
+    stationLoc, userLocation)*0.000621371).toFixed(2));
+
+  distances.push({
+    name: description1,
+    distance: distance
   });
 
-  function mapMarker(loc, description) {
-    new google.maps.Marker({
-      position: loc,
-      map: map,
-      title: description
-    });
-    console.log(distanceAway(loc));
+
+}
+detClosest(distances);
+}
+
+function detClosest(distancesArr) {
+  var index = 0;
+  var value = 100;
+  for (var i = 0; i < distancesArr.length; i++) {
+    if (distancesArr[i].distance < value) {
+      value = distancesArr[i].distance;
+      index = i;
+    }
   }
-
-  function distanceAway(stationLoc) {
-
-    var myLatLng = new google.maps.LatLng(lat, lng);
-
-    return((google.maps.geometry.spherical.computeDistanceBetween(myLatLng, stationLoc))*0.000621371).toFixed(2);
-
-  }
+  console.log('The closest station is: ' + distancesArr[index].name + ' and it is ' + value + ' miles away!');
 }
 
 // Retrieve user location
