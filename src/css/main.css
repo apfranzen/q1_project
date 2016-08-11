@@ -1,9 +1,44 @@
 /* add custom styles */
 html, body {
-  height: 100%;
   margin: 0;
   padding: 0;
+  position: relative;
+  z-index: 0;
+}
+p {
+  font-size: 20px;
 }
 #map {
-  height: 100%;
+  height: 700px;
 }
+
+/*#repeat {
+  background-repeat: repeat;
+}*/
+
+.background {
+  background-repeat: repeat;
+  background-image: url(https://lh4.ggpht.com/q1rTJ6jzXU-W5eEMp8E0MgBGkVWSrV9NG0ncQ5Tu4WZmHxqpRKZugqtdDP2jlpJnJ_M=w300);
+  height: 100vh;
+  opacity: .15;
+  background-position: center;
+}
+
+main {
+  position: absolute;
+  top: 15px;
+  width: 100%;
+  max-width: 960px;
+  height: 60px;
+  margin: auto;
+  left: 0;
+  right: 0;
+  /*text-align: center;
+  width: 800px;
+  margin-left: -400px;
+  left:50%;*/
+}
+
+/*img {
+  opacity: 0.5;
+}*/
