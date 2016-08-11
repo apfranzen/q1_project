@@ -1,5 +1,7 @@
 console.log("sanity check");
 
+// geoFindMe().then(someFn).then()
+
 
 var distances = [];
 // promises.all returns an array with all data from each AJAX call
@@ -40,7 +42,7 @@ var allPromises = Promise.all(promises).then(function(returnedAJAXArr) {
 
 });
 
-  geoFindMe();
+  // geoFindMe();
 
 function getBStatus() {
   return new Promise(function(resolve, reject) {
@@ -69,6 +71,8 @@ function getBStationInfo() {
 }
 
 // Passing in lat and long perameters from geoFindMe
+geoFindMe();
+
 
 function initMap(lat, lng) {
 
@@ -96,14 +100,16 @@ var map = new google.maps.Map(document.getElementById('map'), {
 var marker = new google.maps.Marker({
   position: myLatLng,
   map: map,
-  title: 'Current Location'
+  title: 'Current Location',
+  icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
 });
 
 function mapMarker(loc, description) {
   new google.maps.Marker({
     position: loc,
     map: map,
-    title: description
+    title: description,
+    icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
   });
   var myLatLng = new google.maps.LatLng(lat, lng);
   var distanceArray = distanceAway(loc, myLatLng, description);
@@ -116,7 +122,8 @@ function distanceAway(stationLoc, userLocation, description1) {
 
   distances.push({
     name: description1,
-    distance: distance
+    distance: distance,
+    stationLatLon: stationLoc
   });
 
 
@@ -132,7 +139,17 @@ function detClosest(distancesArr) {
       value = distancesArr[i].distance;
       index = i;
     }
+    // var marker = new google.maps.Marker({
+    //   position: distancesArr[index].stationLatLon,
+    //   map: map,
+    //   title: 'Closest Station',
+    //   icon: 'http://maps.google.com/mapfiles/ms/icons/purple-dot.png'
+    // });
   }
+
+  // $( ".title" ).append( "<p>'The closest station is: ' + distancesArr[index].name + ' and it is ' + value + ' miles away!'</p>" );
+  //
+  // console.log(distancesArr, index, distancesArr[0]);
   console.log('The closest station is: ' + distancesArr[index].name + ' and it is ' + value + ' miles away!');
 }
 

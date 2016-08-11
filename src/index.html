@@ -2,26 +2,29 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Untitled</title>
+    <title>B-cycle Locator</title>
     <!-- styles -->
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
   </head>
-  <body>
+  <body class>
 
+    <h1 class="text-center title"> B-cycle Locator
+    </h1>
+    <br>
+    <p></p>
 
+    <div class="container"
+      <div class="container" id="map">
 
-<!-- <div id="out"></div> -->
+        <!-- <div id="map"></div> -->
+        <!-- Replace the value of the key parameter with your own API key. -->
+        <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDzaOBIjmRJeiSfhiXhPC4Wo4syHsQG_hc&callback=geoFindMe&libraries=geometry">
 
-    <div id="map"></div>
-    <!-- Replace the value of the key parameter with your own API key. -->
-    <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDzaOBIjmRJeiSfhiXhPC4Wo4syHsQG_hc&callback=geoFindMe&libraries=geometry">
-
-    </script>
-
-    <!-- <script src="http://maps.google.com/maps/api/js?sensor=true&libraries=geometry">
-    </script> -->
+        </script>
+      </div>
+    </div>
 
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
     <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
