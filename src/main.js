@@ -159,18 +159,13 @@ function detClosest(distancesArr) {
     }
   }
 
-  var nearStationName = distancesArr[index].name;
-  var nearestDistance = value;
+  var nearStationName = (" " + distancesArr[index].name);
+  var nearestDistance = (" " + value);
 
   // var nearMile = value;
-
-  $( ".station" ).append( "<p> Nearest Station is: " + distancesArr[index].name + "</p>");
-  $( ".station" ).append( "<p> Distance Away: " + value + " Miles</p>");
-  //  + ' and it is ' + value + " Miles away!</p>" );
-
-
-  // console.log('The closest station is: ' + distancesArr[index].name + ' and it is ' + value + ' miles away!');
-}
+  $( ".station" ).prepend( "<div class='col-md-6 text-center'><p> Distance (Miles): </p><p><span class='bold'>" + nearestDistance + "</span></p></div>");
+  $( ".station" ).prepend( "<div class='col-md-6 text-center'><p> Nearest Station: </p><p class='bold text-center'>" + nearStationName + "</p></div>");
+  }
 
 // Retrieve user location
 

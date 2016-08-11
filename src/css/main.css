@@ -11,6 +11,7 @@ logo {
 }
 
 h1 {
+  margin-top: 5px;
   font-family: 'Yellowtail', cursive;
   font-size: 100px;
 }
@@ -21,19 +22,38 @@ h1 {
   border-style: solid;
   border-color: #212478;
   background-color: #f2f2f2;
-  width: 60%;
-  z-index: -1;
+  width: 90%;
   margin-top: 32px;
-  padding: 20px;
+  padding: 12px;
 }
 p {
   font-family: 'Open Sans', sans-serif;
-  opacity: 2;
   margin: 0px;
-  font-size: 30px;
-  text-align: center;
+  font-size: 28px;
   color:  #212478;
-  z-index: 1;
+}
+.bold {
+  font-weight:800;
+  font-size: 42px;
+}
+
+.left {
+  float: left;
+}
+.left p, .left p {
+  max-width: 500px;
+  display: inline-block;
+}
+p span {
+
+}
+.right {
+  float: right;
+  clear: left;
+}
+.clear {
+  display: block;
+  clear: both;
 }
 #map {
   margin-top: 32px;
