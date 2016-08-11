@@ -164,8 +164,8 @@ function detClosest(distancesArr) {
 
   // var nearMile = value;
 
-  $( ".title" ).append( "<p> Nearest Station is: " + distancesArr[index].name + "</p>");
-  $( ".title" ).append( "<p> Distance Away: " + value + " Miles</p>");
+  $( ".station" ).append( "<p> Nearest Station is: " + distancesArr[index].name + "</p>");
+  $( ".station" ).append( "<p> Distance Away: " + value + " Miles</p>");
   //  + ' and it is ' + value + " Miles away!</p>" );
 
 
